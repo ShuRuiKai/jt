@@ -1,0 +1,28 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /
+spring:
+  datasource:
+    #数据库驱动 高版本   com.mysql.cj.jdbc.Driver   
+    #低版本                       com.mysql.jdbc.Driver   
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/jtdb?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+    username: root
+    password: tarena
+
+#引入mybatisplus配置
+mybatis-plus:
+  #定义别名包
+  type-aliases-package: com.jt.pojo
+  #添加映射文件
+  mapper-locations: classpath:/mybatis/mappers/*.xml
+  #开启驼峰映射
+  configuration:
+    map-underscore-to-camel-case: true
+
+#添加日志
+logging:  
+ level:
+    #mybatis指定mapper接口   以debug的形式展现日志.
+    com.jt.mapper: debug

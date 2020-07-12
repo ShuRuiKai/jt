@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jt.mapper.UserMapper">
+	<!--
+		resultType="包名.类名"  如果配置了别名包则可以自动的拼接.
+	
+	  -->
+	  
+	<!-- 
+	<select id="findAll" resultType="User">
+		select * from user
+	</select>
+	关于驼峰映射说明:
+		字段信息:
+				user_id , user_age , user_name
+		对象属性:
+				userId	, userAge ,userName
+		如果需要实现属性与字段的映射,则必须开启驼峰规则.
+		字段信息~~~user_id~~~~~去掉_线~~~~~之后首字母大写~~~~userId
+		改名字可以与对象的属性映射.
+		注意事项:  如果一旦开启驼峰规则映射,则必须按照要求执行.
+			字段:user_id  不能映射  属性:user_id
+	  -->
+	
+	
+	
+</mapper>

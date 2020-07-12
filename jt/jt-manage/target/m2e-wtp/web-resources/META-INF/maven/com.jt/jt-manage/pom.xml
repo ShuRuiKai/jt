@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.jt</groupId>
+    <artifactId>jt</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+     <!-- 1.继承父级 -->
+  </parent>
+  <artifactId>jt-manage</artifactId>
+  <packaging>war</packaging>
+  <dependencies>
+  <!-- 2.添加依赖 -->
+		<dependency>
+			<groupId>com.jt</groupId>
+			<artifactId>jt-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+<!-- 3.添加依赖 -->
+  <!-- 负责打包更新maven操作相关配置,必须配置 -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

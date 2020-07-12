@@ -1,0 +1,30 @@
+# 语法:   1. key-value结构     2.key和value之间使用:(空格)进行分割 
+#         2.YML配置文件有层级结构
+spring:
+ profiles:
+  active: test  
+  
+---  
+spring:
+ profiles: prod
+ 
+server:
+ port: 8090
+ servlet:
+    context-path: /
+--- #环境分隔
+spring:
+ profiles: test
+ 
+server:
+ port: 80
+ servlet:
+    context-path: /test #项目发布路径信息 默认条件下 /根目录
+ # tomcat服务器进行发布 默认发布路径地址webapps目录下
+ # /     ROOT 项目路径
+ # /jt   JT   项目路径
+    
+#指定用户配置文件信息
+msg:    
+ username: 老舒
+ age: 30

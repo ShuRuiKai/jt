@@ -1,0 +1,4 @@
+#key=value   
+#pro文件都是字符串信息 所以不需要添加""号
+msg.username2=凹凸曼打奥特曼
+msg.age2=18
