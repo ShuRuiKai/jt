@@ -47,6 +47,8 @@ public class ItemCatController {
 		//Long parentId = id ==null?0L:id;
 		
 		return itemCatService.findItemCatByParentId(parentId);
+		//通过缓存的方式获取数据
+		//return itemCatService.findItemCatByCache(parentId);
 	}
 	
 }

@@ -7,9 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jt.anno.CacheFind;
 import com.jt.mapper.ItemCatMapper;
 import com.jt.pojo.ItemCat;
+import com.jt.util.ObjectMapperUtil;
 import com.jt.vo.EasyUITree;
+
+import redis.clients.jedis.Jedis;
 
 @Service
 public class ItemCatServiceImpl implements ItemCatService {
@@ -17,6 +21,11 @@ public class ItemCatServiceImpl implements ItemCatService {
 	@Autowired
 	private ItemCatMapper itemCatMapper;
 
+	//spring容器初始化时,(required=false)该注解不是必须注入,但是如果程序调用则必须有值
+	@Autowired(required=false)  
+	private Jedis jedis;
+	
+	@CacheFind(key = "ITEM_CAT_ID")
 	@Override
 	public ItemCat findItemCatById(Long itemCatId) {
 //	QueryWrapper<ItemCat> queryWrapper =new QueryWrapper<ItemCat>();
@@ -32,6 +41,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	 * 思路:将ItemCat转化为EasyUITree对象.
 	 * sql: SELECT * FROM tb_item_cat WHERE parent_id=#{parent_id}
 	 */
+	@CacheFind(key = "ITEM_CAT_LIST")
 	@Override
 	public List<EasyUITree> findItemCatByParentId(Long parentId) {
 		//1.根据parentId查询数据库信息   根据父级查询子级信息.
@@ -53,5 +63,43 @@ public class ItemCatServiceImpl implements ItemCatService {
 		
 		return treeList;
 	}
+
+
+	/**
+	 * 通过缓存的方式查询数据库.
+	 * 1).定义key
+	 * 2).根据key查询redis.
+	 */
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<EasyUITree> findItemCatByCache(Long parentId) {
+		//1.定义key
+		String key ="ITEM_CAT_LIST::"+parentId;
+		List<EasyUITree> treeList =new ArrayList<EasyUITree>();
+		Long startTime =System.currentTimeMillis();
+		//2.判断redis是否有值
+		if (jedis.exists(key)) {
+			//不是第一次查询,获取缓存数据直接返回数据
+			String json= jedis.get(key);
+			Long endTime =System.currentTimeMillis();
+			treeList = ObjectMapperUtil.toObject(json, treeList.getClass());
+			System.out.println("redis查询缓存时间为:"+(endTime-startTime)+"毫秒");
+			
+		}else{//redis中没有key,用户第一次查询,让他去查询数据库
+			treeList = findItemCatByParentId(parentId);
+			Long endTime =System.currentTimeMillis();
+			//需要将list集合转化为json(调用ObjectMapperUtilAPI)
+			String json= ObjectMapperUtil.toJSON(treeList);
+			//将数据保存到redis中
+			jedis.set(key, json);
+			System.out.println("redis查询数据库时间为:"+(endTime-startTime)+"毫秒");
+		}
+		
+		return treeList;
+	}
+
+	
+	
 	
 }

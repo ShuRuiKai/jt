@@ -36,7 +36,7 @@ public class FileController {
 	@RequestMapping("/file")
 	public String file(MultipartFile fileImage) throws IllegalStateException, IOException {
 		//1.定义文件目录信息
-		String dirPath ="C:\\java\\WS_CGB2003_four\\jt\\jt-manage\\src\\main\\webapp\\easy-ui\\images";
+		String dirPath ="C:\\java\\LX";
 		File fileDir =new File(dirPath);
 		
 		//2.校验图片目录是否存在
